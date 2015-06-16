@@ -1,8 +1,10 @@
 var express = require('express');
 var app = express();
-var port = process.env.PORT || 3000;
+var server = require('http').createServer(app); // creating second express server for web sockets
 var morgan = require('morgan');
+var port = process.env.PORT || 3000;
 var router = express.Router();
+
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
@@ -29,6 +31,20 @@ router.get('/about', function(req, res){
 
 app.use('/', router);
 
-app.listen(port, function(){
+server.listen(port, function(){
   console.log('Server started on http://localhost:' + port);
 });
+
+var io = require('socket.io')(server);
+
+var Twit = require('twit');
+
+var twitter = new Twit({
+  consumer_key:         process.env.EXPRESS_PRACTICE_TWITTER_CONSUMER_KEY,
+  consumer_secret:      process.env.EXPRESS_PRACTICE_TWITTER_CONSUMER_SECRET,
+  access_token:         process.env.EXPRESS_PRACTICE_TWITTER_ACCESS_TOKEN,
+  access_token_secret:  process.env.EXPRESS_PRACTICE_TWITTER_ACCESS_TOKEN_SECRET
+})
+
+console.log(twitter);
+
