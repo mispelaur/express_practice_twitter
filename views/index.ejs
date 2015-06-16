@@ -7,5 +7,24 @@
 <body>
   <h1><%- header %></h1>
   <h1><%- name %></h1>
+  <div id="tweet-container"></div>
 </body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+  var socket = io();
+  socket.on('connect', function(){
+    console.log('Connected!');
+  })
+
+  socket.on('tweets', function(tweet){
+    console.log(tweet);
+    var html = '<div class="row"><div class="col-md-6 col-md-offset-3 tweet"><img src="' + tweet.user_profile_image + '" class="avatar pull-left"/><div class="names"><span class="full-name">' + tweet.name + ' </span><span class="username">@' + tweet.screen_name + '</span></div><div class="contents"><span class="text">' + tweet.text + '</span></div></div></div>';
+    $('#tweet-container').prepend(html);
+  })
+
+
+</script>
 </html>

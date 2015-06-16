@@ -46,5 +46,25 @@ var twitter = new Twit({
   access_token_secret:  process.env.EXPRESS_PRACTICE_TWITTER_ACCESS_TOKEN_SECRET
 })
 
-console.log(twitter);
+// console.log(twitter);
+
+var stream = twitter.stream('statuses/filter', { track: 'javascript, ruby' });
+
+//getting all of our streaming tweets and sending it down socket channel directly to client
+io.on('connect', function(socket){ 
+  // this is coming from the twit module
+  // 'tweet' is one of the events it listens to
+  stream.on('tweet', function(tweet){
+    // this is our own channel, set up to send the tweet down to the client
+    // this can be called anything, but must use the same thing on the client
+    var data = {};
+    data.name = tweet.user.name;
+    data.screen_name = tweet.user.screen_name;
+    data.text = tweet.text;
+    data.user_profile_image = tweet.user.profile_image_url;
+
+    socket.emit('tweets', data)
+  })
+});
+
 
