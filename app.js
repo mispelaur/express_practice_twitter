@@ -11,6 +11,8 @@ app.set('view engine', 'ejs');
 
 app.use(morgan('dev')); // alternative to below
 
+app.use(express.static(__dirname + '/public'));
+
 // Logging Middleware - btw request and response
 // app.use(function(req, res, next){
 //   console.log('%s request to %s from %s', req.method, req.path, req.ip);
