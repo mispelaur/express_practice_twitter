@@ -2,8 +2,11 @@ var express = require('express');
 var app = express();
 var port = process.env.PORT || 3000;
 
+app.set('views', './views');
+app.set('view engine', 'ejs');
+
 app.get('/', function(req, res){
-  res.send('Hello World.');
+  res.render('index', { header: 'index page' });
 });
 
 app.listen(port, function(){
